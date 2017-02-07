@@ -1,0 +1,46 @@
+import urllib.request
+import json
+
+def btceBD():
+  x = urllib.request.urlopen('https://btc-e.com/api/2/btc_usd/ticker')
+  jsondata = x.read().decode("utf-8")
+  data = json.loads(jsondata)
+  return str(data['ticker']['last'])
+
+
+def bitfinexBD():
+  x = urllib.request.urlopen('https://api.bitfinex.com/v1/pubticker/btcusd')
+  jsondata = x.read().decode("utf-8")
+  data = json.loads(jsondata)
+  return str(data['last_price'])
+
+def getBtceFee():
+  x = urllib.request.urlopen(' https://btc-e.com/api/2/btc_usd/fee')
+  jsondata = x.read().decode("utf-8")
+  data = json.loads(jsondata)
+  z = float(data['trade']) / 10
+  return str(z)
+
+def getBitfinexFee():
+  return float("0.2")
+
+def calcProfit(btc):
+  buyP = btc * btceBD()
+  btceFee = btc * float(getBtceFee())
+  print("buy at btce: " + str(buyP))
+  print("BTC: " + str(btc))
+  print("minus btc-e fee:" + str(btceFee) +"%")
+  netBtc = btc - btceFee
+  print("BTC: " + str(netBtc))
+  print(" ")
+
+  netUsd = netBtc * float(bitfinexBD())
+  print("sell at bitfinex: " + str(netUsd))
+  print(" ")
+  print("TODO; Lte functions; minerFee function")
+
+z = True
+while z:
+  calcProfit(1)
+  z = False 
+    
